@@ -11,6 +11,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ public class Detalle extends AppCompatActivity{
     private int id;
     private Uri pathImage;
     private static final int REQUEST_CODE_PHOTO_IMAGE = 1787;
+    String foto;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +56,12 @@ public class Detalle extends AppCompatActivity{
         // Se identifica si es Fugitivo o Capturado para el mensaje...
         if (mode == 0){
             message.setText("El fugitivo sigue suelto...");
+            Button oBtn = (Button)this.findViewById(R.id.btnOpenGL);
+            oBtn.setVisibility(View.GONE);
+            EditText edt = (EditText)this.findViewById(R.id.txtDistorcion);
+            edt.setVisibility(View.GONE);
+            CheckBox cb = (CheckBox)this.findViewById(R.id.cbDefault);
+            cb.setVisibility(View.GONE);
         }else {
             Button delete = (Button)findViewById(R.id.buttonEliminar);
             delete.setVisibility(View.GONE);
@@ -62,6 +71,7 @@ public class Detalle extends AppCompatActivity{
             if (pathPhoto != null && pathPhoto.length() > 0){
                 Bitmap bitmap = PictureTools.decodeSampledBitmapFromUri(pathPhoto,200,200);
                 photoImageView.setImageBitmap(bitmap);
+                foto = pathPhoto;
             }
         }
     }
@@ -94,7 +104,44 @@ public class Detalle extends AppCompatActivity{
             }
         });
         netServices.execute("Atrapar", Home.UDID);
+        Button oBtn1 = (Button)this.findViewById(R.id.buttonCapturar);
+        Button oBtn2 = (Button)this.findViewById(R.id.buttonEliminar);
+        oBtn1.setVisibility(View.GONE);
+        oBtn2.setVisibility(View.GONE);
+
+        Button oBtn = (Button)this.findViewById(R.id.btnOpenGL);
+        oBtn.setVisibility(View.VISIBLE);
+        EditText edt = (EditText)this.findViewById(R.id.txtDistorcion);
+        edt.setVisibility(View.VISIBLE);
+        CheckBox cb = (CheckBox)this.findViewById(R.id.cbDefault);
+        cb.setVisibility(View.VISIBLE);
         setResult(0);
+    }
+
+    public void onOpenGLClick(View view) {
+        String texto = ((TextView)this.findViewById(R.id.txtDistorcion)).getText().toString();
+        String cbDefault = "0";
+        CheckBox cb = (CheckBox)this.findViewById(R.id.cbDefault);
+        if(cb.isChecked())
+            cbDefault = "1";
+
+        try
+        {
+            float textofloat = Float.parseFloat(texto);
+            if(textofloat < 0.0f){
+                Toast.makeText(this, "Entrada errones debe ser numero flotante", Toast.LENGTH_LONG).show();
+                return;
+            }
+            Intent intentOpenGL = new Intent();
+            intentOpenGL.setClass(this, ActivityOpenGLFugitivos.class);
+            intentOpenGL.putExtra("foto", foto);
+            intentOpenGL.putExtra("distorcion", foto);
+            intentOpenGL.putExtra("default", cbDefault);
+            startActivity(intentOpenGL);
+        }
+        catch(Exception ex){
+            Toast.makeText(this, "Entrada errores", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void OnDeleteClick(View view) {

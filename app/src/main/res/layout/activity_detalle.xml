@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center|top"
-    android:padding="@dimen/activity_horizontal_margin">
+    android:fillViewport="true">
 
     <TextView
         android:id="@+id/mensajeText"
@@ -46,4 +44,34 @@
         android:text="@string/boton_foto"
         android:onClick="OnFotoClick"/>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/btnOpenGL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="30dp"
+    android:minWidth="100dp"
+    android:text="@string/btn_OpenGL"
+    android:onClick="onOpenGLClick"
+    android:textAppearance="?android:attr/textAppearanceSmallInverse"
+    />
+
+    <EditText
+        android:id="@+id/txtDistorcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/distorcion"
+        android:maxLength="10"
+        android:maxWidth="150dp"
+        android:minWidth="150dp"
+        />
+    <CheckBox
+        android:id="@+id/cbDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="Imagen Default"/>
+</ScrollView>
